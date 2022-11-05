@@ -104,7 +104,9 @@ class AddMovie : AppCompatActivity() {
                                 }
                             }
                         }
-                        addMovie()
+                        addMovie(MovieModel(name = title, overview = overview, language = language))
+                        val intent = Intent(this@AddMovie,MainActivity::class.java)
+                        startActivity(intent)
                     }
                 }
                 return true
@@ -122,7 +124,6 @@ class AddMovie : AppCompatActivity() {
         } else{
             bothcb.visibility = View.INVISIBLE
         }
-
     }
 
     // If programme reruns, the checkbox remain the same
@@ -159,6 +160,7 @@ class AddMovie : AppCompatActivity() {
     // Database functions below
     private fun clearEditText(){
         binding.apply {
+            nameET.setText("")
             desET.setText("")
             dateET.setText("")
             rbtnEng.setChecked(true)
@@ -168,16 +170,9 @@ class AddMovie : AppCompatActivity() {
             twocb.visibility = View.INVISIBLE
         }
     }
-    private fun addMovie(){
+    private fun addMovie(m:MovieModel){
         binding.apply {
-            val title = nameET.text.toString()
-            val overview = desET.text.toString()
-            // Doing android.widget.RadioButton instead of checkedID and compared in IF ELSE Statement,shorten the code
-            val languageRDBT: RadioButton = findViewById(radiogroup.checkedRadioButtonId)
-            val language = languageRDBT.text.toString()
-
-            val movie = MovieModel(name = title, overview = overview, language = language)
-            val status = sqliteHelper.insertMovie(movie)
+            val status = sqliteHelper.insertMovie(m)
             // Check insert success or not success
             if (status > -1){
                 Toast.makeText(applicationContext,"Movie Added Successfully",Toast.LENGTH_SHORT).show()
@@ -186,11 +181,6 @@ class AddMovie : AppCompatActivity() {
                 Toast.makeText(this@AddMovie,"Record not saved", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun getMovies(){
-        val movieList = sqliteHelper.getAllMovie()
-        Log.e("pppp","${movieList.size}")
     }
 
 

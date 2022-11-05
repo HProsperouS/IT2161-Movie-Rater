@@ -52,7 +52,6 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
     }
 
 
-
     @SuppressLint("Range", "Recycle")
     fun getAllMovie():ArrayList<MovieModel>{
         val movielist:ArrayList<MovieModel> = ArrayList()

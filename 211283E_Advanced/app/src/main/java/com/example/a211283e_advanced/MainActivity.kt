@@ -6,26 +6,28 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ListView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
-    private var adapter:MovieAdapter? = null
-
+    private var arrayAdapter:MovieAdapter? = null
     private lateinit var sqliteHelper:SQLiteHelper
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initView()
-        initRecyclerView()
         sqliteHelper = SQLiteHelper(this)
         getMovies()
         val actionbar = supportActionBar
         actionbar!!.title = "Movie Rater"
+    }
+
+    override fun onResume() {
+        getMovies()
+        super.onResume()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -41,20 +43,11 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initRecyclerView(){
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = MovieAdapter()
-        recyclerView.adapter = adapter
-    }
-    private fun initView(){
-        recyclerView = findViewById(R.id.recyclerView)
-    }
-
     private fun getMovies(){
-        val movieList = sqliteHelper.getAllMovie()
-        Log.e("pppp","${movieList.size}")
-
-        adapter?.addItems(movieList)
+        val movielist = sqliteHelper.getAllMovie()
+        arrayAdapter = MovieAdapter(this,R.layout.card_items_movie, movielist)
+        val listView: ListView = findViewById(R.id.listView)
+        listView.adapter = arrayAdapter
     }
 
 }
