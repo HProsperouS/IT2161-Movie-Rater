@@ -14,6 +14,8 @@ import com.example.a211283e_advanced.databinding.ActivityEditMovieDetailBinding
 
 // Copied from AddMovie
 class EditMovieDetail : AppCompatActivity() {
+    private var arrayAdapter:MovieAdapter? = null
+    private lateinit var sqliteHelper:SQLiteHelper
     private lateinit var binding: ActivityEditMovieDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,31 +25,37 @@ class EditMovieDetail : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.title = "Movie Rater"
 
-        val m = Movieinfo("Venom", "Overview","English","19-10-2018",true,true,false)
+        sqliteHelper = SQLiteHelper(this)
+
+        val m = getMovie()
 
         binding.apply{
-            nameET.setText(m.name)
-            desET.setText(m.desc)
+            if (m != null) {
+                nameET.setText(m.name)
+                desET.setText(m.overview)
+                when(m.language){
+                    "English" -> rbtnEng.isChecked = true
+                    "Chinese" -> rbtnChn.isChecked = true
+                    "Malay" -> rbtnMal.isChecked = true
+                    "Tamil" -> rbtnTam.isChecked =true
+                }
+            }else{
+                nameET.setText("NULL")
+            }
 
-            when(m.language){
-                "English" -> rbtnEng.isChecked = true
-                "Chinese" -> rbtnChn.isChecked = true
-                "Malay" -> rbtnMal.isChecked = true
-                "Tamil" -> rbtnTam.isChecked =true
-            }
-            dateET.setText(m.release)
-
-            if (m.notsuitable == true){
-                cbsuitable.setChecked(true)
-                cbviolence.visibility = View.VISIBLE
-                cblanguage.visibility = View.VISIBLE
-            }
-            if (m.notsuitableviolent == true){
-                cbviolence.setChecked(true)
-            }
-            if (m.notsuitablelanguage == true){
-                cblanguage.setChecked(true)
-            }
+//            dateET.setText(m.release)
+//
+//            if (m.notsuitable == true){
+//                cbsuitable.setChecked(true)
+//                cbviolence.visibility = View.VISIBLE
+//                cblanguage.visibility = View.VISIBLE
+//            }
+//            if (m.notsuitableviolent == true){
+//                cbviolence.setChecked(true)
+//            }
+//            if (m.notsuitablelanguage == true){
+//                cblanguage.setChecked(true)
+//            }
         }
 
     }
@@ -56,6 +64,19 @@ class EditMovieDetail : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.editmoviedetail,menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun getMovie(): MovieModel? {
+        val id: Int = intent.getIntExtra("MovieId", -1)
+        if (id == -1) {
+            return null
+        }
+        val movie = sqliteHelper.retrieveMovieById(id)
+        if (movie != null) {
+            println("Hello")
+            println(movie.id)
+        }
+        return movie
     }
 
 }

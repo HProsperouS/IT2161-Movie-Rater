@@ -88,8 +88,57 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
                 println(movie)
             }while (cursor.moveToNext())
         }
-
         return movielist
+    }
+
+    fun updateMovie(model:MovieModel):Int{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(ID, model.id)
+        contentValues.put(NAME,model.name)
+        contentValues.put(OVERVIEW,model.overview)
+        contentValues.put(LANGUAGE,model.language)
+
+        val success = db.update(TBL_MOVIE, contentValues,"id=" + model.id, null)
+        db.close()
+        return success
+    }
+
+    @SuppressLint("Range")
+    fun retrieveMovieById(id:Int): MovieModel? {
+        val selectQuery = "SELECT * FROM $TBL_MOVIE WHERE $ID = '$id'"
+        val db = this.readableDatabase
+        val cursor: Cursor
+
+        try {
+            cursor = db.rawQuery(selectQuery,null)
+        }catch (e:Exception){
+            e.printStackTrace()
+            return null
+        }
+
+        var movie:MovieModel? = null
+        val name:String
+        val overview:String
+        val language:String
+
+
+        if (cursor.moveToFirst()){
+            name = cursor.getString(cursor.getColumnIndex("name"))
+            overview = cursor.getString(cursor.getColumnIndex("overview"))
+            language = cursor.getString(cursor.getColumnIndex("language"))
+
+            movie = MovieModel(
+                id,
+                name,
+                overview,
+                language
+            )
+
+        }
+        db.close()
+        return movie
+
     }
 
 }
