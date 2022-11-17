@@ -66,8 +66,8 @@ class AddMovie : AppCompatActivity() {
 
                     // Initialised the language button as english
                     // Call the validation() function to validates the form
-                    val haserror = validation()
-                    if (haserror == false){
+                    val hasError = validation()
+                    if (hasError == false){
                         val title = nameET.text.toString()
                         val overview = desET.text.toString()
                         // Doing android.widget.RadioButton instead of checkedID and compared in IF ELSE Statement,shorten the code
@@ -104,7 +104,17 @@ class AddMovie : AppCompatActivity() {
                                 }
                             }
                         }
-                        addMovie(MovieModel(name = title, overview = overview, language = language))
+                        addMovie(MovieModel(
+                            name = title,
+                            overview = overview,
+                            language = language,
+                            releaseDate = date,
+                            isSuitable = notsuitable,
+                            isViolence = isviolence,
+                            isLanguageUsed = islanguageused,
+                            rating = null,
+                            review = null
+                        ))
                         val intent = Intent(this@AddMovie,MainActivity::class.java)
                         startActivity(intent)
                     }
@@ -170,6 +180,7 @@ class AddMovie : AppCompatActivity() {
             twocb.visibility = View.INVISIBLE
         }
     }
+
     private fun addMovie(m:MovieModel){
         binding.apply {
             val status = sqliteHelper.insertMovie(m)

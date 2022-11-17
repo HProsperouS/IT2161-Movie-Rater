@@ -4,10 +4,16 @@ import java.util.*
 
 data class MovieModel (
     var id:Int =getAutoId(),
-    var name: String = "",
-    var overview: String = "",
-    var language: String = ""
-
+    var name: String,
+    var overview: String,
+    var language: String,
+    var releaseDate: String,
+    var isSuitable:Boolean,
+    var isViolence:Boolean,
+    var isLanguageUsed:Boolean,
+    // Allow null
+    var rating:Int?,
+    var review:String?
     ){
     companion object{
         fun getAutoId():Int{

@@ -125,13 +125,5 @@
             />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/AddButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/twocb"
-        android:text="Add Movie"
-        />
-
 
 </RelativeLayout>
