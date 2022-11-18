@@ -33,7 +33,7 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
                 + ID + " INTEGER PRIMARY KEY," + NAME + " TEXT,"
                 + OVERVIEW + " TEXT," + LANGUAGE + " TEXT,"
                 + RELEASE_DATE + " TEXT," + IS_SUITABLE + " INTEGER,"
-                + IS_VIOLENCE + " INTEGER," + IS_LANGUAGE_USED + " INTEGER,"
+                + IS_VIOLENCE + " INTEGER," + IS_LANGUAGE_USED + " FLOAT,"
                 + RATING + " INTEGER," + REVIEW + " TEXT"
                 + ")"
                 )
@@ -93,7 +93,7 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
         var isViolence:Boolean
         var isLanguageUsed:Boolean
         // Allow null
-        var rating:Int?
+        var rating:Float?
         var review:String?
 
         if (cursor.moveToFirst()){
@@ -106,7 +106,7 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
                 isSuitable = cursor.getInt(cursor.getColumnIndex("is_suitable")) > 0
                 isViolence = cursor.getInt(cursor.getColumnIndex("is_violence")) > 0
                 isLanguageUsed = cursor.getInt(cursor.getColumnIndex("is_language_used")) > 0
-                rating = cursor.getInt(cursor.getColumnIndex("rating"))
+                rating = cursor.getFloat(cursor.getColumnIndex("rating"))
                 review = cursor.getString(cursor.getColumnIndex("review"))
 
 
@@ -125,6 +125,12 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
         contentValues.put(NAME,model.name)
         contentValues.put(OVERVIEW,model.overview)
         contentValues.put(LANGUAGE,model.language)
+        contentValues.put(RELEASE_DATE,model.releaseDate)
+        contentValues.put(IS_SUITABLE,model.isSuitable)
+        contentValues.put(IS_VIOLENCE,model.isViolence)
+        contentValues.put(IS_LANGUAGE_USED,model.isLanguageUsed)
+//        contentValues.put(RATING,model.rating)
+//        contentValues.put(REVIEW,model.review)
 
         val success = db.update(TBL_MOVIE, contentValues,"id=" + model.id, null)
         db.close()
@@ -153,7 +159,7 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
         var isViolence:Boolean
         var isLanguageUsed:Boolean
         // Allow null
-        var rating:Int?
+        var rating:Float?
         var review:String?
 
 
@@ -165,15 +171,26 @@ class SQLiteHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,
             isSuitable = cursor.getInt(cursor.getColumnIndex("is_suitable")) > 0
             isViolence = cursor.getInt(cursor.getColumnIndex("is_violence")) > 0
             isLanguageUsed = cursor.getInt(cursor.getColumnIndex("is_language_used")) > 0
-            rating = cursor.getInt(cursor.getColumnIndex("rating"))
+            rating = cursor.getFloat(cursor.getColumnIndex("rating"))
             review = cursor.getString(cursor.getColumnIndex("review"))
 
             movie = MovieModel(id, name, overview, language, releaseDate, isSuitable, isViolence, isLanguageUsed, rating, review)
-
         }
         db.close()
         return movie
 
+    }
+
+    fun rateMovie(model:MovieModel):Int{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(RATING,model.rating)
+        contentValues.put(REVIEW,model.review)
+
+        val success = db.update(TBL_MOVIE, contentValues, "id=" + model.id , null)
+        db.close()
+
+        return success
     }
 
 }

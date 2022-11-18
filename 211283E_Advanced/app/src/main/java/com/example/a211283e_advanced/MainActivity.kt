@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         actionbar!!.title = "Movie Rater"
     }
 
+
+
     override fun onResume() {
         getMovies()
         super.onResume()
@@ -51,6 +53,10 @@ class MainActivity : AppCompatActivity() {
         val listView: ListView = findViewById(R.id.listView)
         listView.adapter = arrayAdapter
         registerForContextMenu(listView)
+        listView.setOnItemClickListener { adapterView, view, i, l ->
+        var movie: MovieModel = adapterView.getItemAtPosition(i) as MovieModel
+            GoMovieDetail(movie)
+        }
     }
 
     override fun onCreateContextMenu(
@@ -76,6 +82,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun GoEditMovie(movie:MovieModel){
         val intent = Intent(this@MainActivity,EditMovieDetail::class.java)
+        intent.putExtra("MovieId", movie.id)
+        startActivity(intent)
+    }
+
+    private fun GoMovieDetail(movie: MovieModel){
+
+        val intent = Intent(this@MainActivity,MovieDetail::class.java)
         intent.putExtra("MovieId", movie.id)
         startActivity(intent)
     }

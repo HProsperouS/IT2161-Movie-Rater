@@ -12,7 +12,7 @@ data class MovieModel (
     var isViolence:Boolean,
     var isLanguageUsed:Boolean,
     // Allow null
-    var rating:Int?,
+    var rating:Float?,
     var review:String?
     ){
     companion object{
