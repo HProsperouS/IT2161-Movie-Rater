@@ -44,7 +44,7 @@ class AddMovie : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.Clear -> {
                 binding.apply {
                     nameET.setText("")
@@ -109,23 +109,11 @@ class AddMovie : AppCompatActivity() {
                         MovieInfoAdded.putExtra("language",language)
                         MovieInfoAdded.putExtra("date",dateET.text.toString())
 
-                        if (cbsuitable.isChecked){
-                            MovieInfoAdded.putExtra("notsuitable",true)
-                            if (cbviolence.isChecked){
-                                MovieInfoAdded.putExtra("cbviolent",true)
-                            }
-                            if (cblanguage.isChecked){
-                                MovieInfoAdded.putExtra("cblanguage",true)
-                            }
-                        }
-
-                        else
-                            MovieInfoAdded.putExtra("notsuitable",false)
-                            MovieInfoAdded.putExtra("cbviolent",false)
-                            MovieInfoAdded.putExtra("cblanguage",false)
+                        MovieInfoAdded.putExtra("notsuitable", notsuitable)
+                        MovieInfoAdded.putExtra("cbviolent", isviolence)
+                        MovieInfoAdded.putExtra("cblanguage", islanguageused)
 
                         startActivity(MovieInfoAdded)
-
                     }
                 }
                 return true

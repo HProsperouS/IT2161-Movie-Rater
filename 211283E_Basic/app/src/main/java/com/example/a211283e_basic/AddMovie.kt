@@ -2,6 +2,7 @@ package com.example.a211283e_basic
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.RadioButton
 import android.widget.Toast
 import android.view.View
@@ -9,18 +10,19 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 
 import com.example.a211283e_basic.databinding.ActivityAddMovieBinding
+import java.text.SimpleDateFormat
 
 class AddMovie : AppCompatActivity() {
     private lateinit var binding: ActivityAddMovieBinding
 
-//    override fun onResume() {
-//        super.onResume()
-//        setvisibility() // check visibility
-//    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddMovieBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val actionbar = supportActionBar
+        actionbar!!.title = "Movie Rater"
+        actionbar.setDisplayHomeAsUpEnabled(true)
 
         binding.apply {
             // When Checkbox Suitable is clicked, set visibility of the other checkboxes
@@ -35,7 +37,7 @@ class AddMovie : AppCompatActivity() {
                 // Call the validation() function to validates the form
                 validation()
                 val haserror = validation()
-                if (haserror == false){
+                if (haserror == false) {
                     val title = nameET.text.toString()
                     val overview = desET.text.toString()
 
@@ -57,35 +59,39 @@ class AddMovie : AppCompatActivity() {
                     )
 
                     // If it is not suitable for all audience, must give a reason
-                    if (notsuitable){
+                    if (notsuitable) {
                         // if not give a reason, return back to onclicklistener
-                        if(!isviolence && !islanguageused){
-                            displayToast("Please give a reason why it is not suitable for all ages")
-                            // So would not show two toast
-                            return@setOnClickListener
-                        }
+//                        if (!isviolence && !islanguageused) {
+//                            displayToast("Please give a reason why it is not suitable for all ages")
+//                            // So would not show two toast
+//                            return@setOnClickListener
+//                        }
                         message.add("Reason: ")
-                        if(cbviolence.isChecked){
+                        if (cbviolence.isChecked) {
                             message.add("Violence")
                         }
-                        if (cblanguage.isChecked){
+                        if (cblanguage.isChecked) {
                             message.add("Language used")
+                        }
+                        if (!isviolence && !islanguageused){
+                            message.add("None selected")
                         }
                     }
                     displayToast(message.joinToString("\n"))
                 }
             }
         }
-
     }
 
     // Both check boxes have to set to visible if "Not suitable for all audience"
-    private fun setvisibility(){
-        val bothcb : LinearLayout = findViewById(R.id.twocb)
+    private fun setvisibility() {
+        val bothcb: LinearLayout = findViewById(R.id.twocb)
 
-        if(bothcb.visibility == View.INVISIBLE){
+        println("[SET VISIBILITY]: running")
+        val notSuitable = findViewById<CheckBox>(R.id.cbsuitable)
+        if (notSuitable.isChecked) {
             bothcb.visibility = View.VISIBLE
-        } else{
+        } else {
             bothcb.visibility = View.INVISIBLE
         }
     }
@@ -100,17 +106,23 @@ class AddMovie : AppCompatActivity() {
         var haserror = false
         binding.apply {
 
-            if (nameET.text.isEmpty()){
+            if (nameET.text.isEmpty()) {
                 nameET.error = "Name cannot be empty"
                 haserror = true
             }
-            if (desET.text.isEmpty()){
+            if (desET.text.isEmpty()) {
                 desET.error = "Description cannot be empty"
                 haserror = true
             }
-            if (dateET.text.isEmpty()){
+            if (dateET.text.isEmpty()) {
                 dateET.error = "Date cannot be empty"
                 haserror = true
+                try {
+                    val formatter = SimpleDateFormat("dd-MM-yyyy")
+                    formatter.parse(dateET.text.toString())
+                } catch (e: Exception){
+                    dateET.error = "Please enter correct format"
+                }
             }
             return haserror
             // Radio button error prevention --> Set "English" as default, so it will not be empty
@@ -118,8 +130,8 @@ class AddMovie : AppCompatActivity() {
         }
     }
 
-    private fun displayToast(message:String){
-        Toast.makeText( applicationContext,message, Toast.LENGTH_LONG).show()
+    private fun displayToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
 }

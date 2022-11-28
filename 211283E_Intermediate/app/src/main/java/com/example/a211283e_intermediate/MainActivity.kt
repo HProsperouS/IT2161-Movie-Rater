@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item?.itemId == R.id.Add) {
+        if (item.itemId == R.id.Add) {
             val AddMovie = Intent(this,AddMovie::class.java)
             startActivity(AddMovie)
         }

@@ -40,10 +40,10 @@ class MovieDetail : AppCompatActivity() {
             if (cbviolent == true){
                 textofsuitable.text = "No(Violence)"
             }
-            else if (cblanguage == true){
+            if (cblanguage == true){
                 textofsuitable.text = "No(Language Used)"
             }
-            else{
+            if (cbviolent == true && cblanguage == true){
                 textofsuitable.text = "No(Violence And Language Used)"
             }
         }else{
@@ -68,7 +68,23 @@ class MovieDetail : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.review ->{
+
+                val name = intent.getStringExtra("name")
+                val desc = intent.getStringExtra("desc")
+                val language = intent.getStringExtra("language")
+                val date = intent.getStringExtra("date")
+                val notsuitbale = intent.getBooleanExtra("notsuitable", false)
+                val cbviolent = intent.getBooleanExtra("cbviolent",false)
+                val cblanguage = intent.getBooleanExtra("cblanguage",false)
+
                 val intent = Intent(this@MovieDetail,RateMovie::class.java)
+                intent.putExtra("name", name)
+                intent.putExtra("desc",desc)
+                intent.putExtra("language",language)
+                intent.putExtra("date",date)
+                intent.putExtra("notsuitable", notsuitbale)
+                intent.putExtra("cbviolent", cbviolent)
+                intent.putExtra("cblanguage", cblanguage)
                 startActivity(intent)
                 true
             }
@@ -90,7 +106,7 @@ class MovieDetail : AppCompatActivity() {
 
     // Redirect to Edit Movie info
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item?.itemId == R.id.Edit) {
+        if (item.itemId == R.id.Edit) {
             val intent = Intent(this,EditMovieDetail::class.java)
             startActivity(intent)
         }

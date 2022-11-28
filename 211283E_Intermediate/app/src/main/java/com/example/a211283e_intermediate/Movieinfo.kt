@@ -26,3 +26,5 @@ class Movieinfo(name: String,desc:String,language:String,release:String,notsuita
         this.notsuitablelanguage = notsuitableexplang
     }
 }
+
+data class Movie(var name: String, var desc: String, var language: String, var release: String, var notsuitable: Boolean, var notsuitableexplang: Boolean)

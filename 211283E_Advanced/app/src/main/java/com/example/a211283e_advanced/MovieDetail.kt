@@ -83,6 +83,7 @@ class MovieDetail : AppCompatActivity() {
                 val isViolence = m.isViolence
                 val isLanguageUsed = m.isLanguageUsed
                 if (m.review != null){
+                    rate.rating = m.rating!!
                     textofreview.setText(m.review)
                 }else{
                     textofreview.text = "No Reviews yet. \nLong press here to add your review"

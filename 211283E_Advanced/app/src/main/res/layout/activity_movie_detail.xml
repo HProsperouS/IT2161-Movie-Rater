@@ -56,6 +56,14 @@
         android:layout_height="wrap_content"
         android:text="Reviews" />
 
+    <RatingBar
+        android:id="@+id/rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:isIndicator="true"
+        />
+
     <TextView
         android:id="@+id/textofreview"
         android:layout_width="match_parent"

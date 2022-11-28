@@ -107,23 +107,21 @@
         android:id="@+id/twocb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:minHeight="100dp"
         android:layout_below="@+id/cbsuitable"
-        android:visibility="invisible">
+        android:minHeight="100dp"
+        android:orientation="horizontal">
+
         <CheckBox
             android:id="@+id/cbviolence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Violence"
-            />
+            android:text="Violence" />
 
         <CheckBox
             android:id="@+id/cblanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Language used"
-            />
+            android:text="Language used" />
     </LinearLayout>
 
     <Button
