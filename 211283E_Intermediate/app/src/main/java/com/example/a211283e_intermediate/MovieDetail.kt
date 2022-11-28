@@ -22,37 +22,50 @@ class MovieDetail : AppCompatActivity() {
 
         binding.apply {
 
-        val name = intent.getStringExtra("name")
-        val desc = intent.getStringExtra("desc")
-        val language = intent.getStringExtra("language")
-        val date = intent.getStringExtra("date")
-        val notsuitbale = intent.getBooleanExtra("notsuitable", false)
-        val cbviolent = intent.getBooleanExtra("cbviolent",false)
-        val cblanguage = intent.getBooleanExtra("cblanguage",false)
+            val name = intent.getStringExtra("name")
+            val desc = intent.getStringExtra("desc")
+            val language = intent.getStringExtra("language")
+            val date = intent.getStringExtra("date")
+            val notsuitbale = intent.getBooleanExtra("notsuitable", false)
+            val cbviolent = intent.getBooleanExtra("cbviolent",false)
+            val cblanguage = intent.getBooleanExtra("cblanguage",false)
+            val rating = intent.getFloatExtra("rating",0F)
+            val review = intent.getStringExtra("review")
 
-        textoftitle.text = name
-        textofoverview.text = desc
-        textoflanguage.text = language
-        textofdate.text = date
-        textofreview.text = "No Reviews yet. \nLong press here to add your review"
-
-        if (notsuitbale == true){
-            if (cbviolent == true){
-                textofsuitable.text = "No(Violence)"
+            textoftitle.text = name
+            textofoverview.text = desc
+            textoflanguage.text = language
+            textofdate.text = date
+            if (rating != 0F){
+                rate.rating = rating
+                rate.visibility = View.VISIBLE
             }
-            if (cblanguage == true){
-                textofsuitable.text = "No(Language Used)"
-            }
-            if (cbviolent == true && cblanguage == true){
-                textofsuitable.text = "No(Violence And Language Used)"
-            }
-        }else{
-            textofsuitable.text = "Yes"
-        }
 
-        // Long Press
-        registerForContextMenu(textofreview)
+            if (review != null) {
+                textofreview.text = review
+            }else if (rating != 0F){
+                textofreview.text = ""
+            }else{
+                textofreview.text = "No Reviews yet. \nLong press here to add your review"
+            }
 
+            if (notsuitbale == true){
+                if (cbviolent == true){
+                    textofsuitable.text = "No(Violence)"
+                }
+                if (cblanguage == true){
+                    textofsuitable.text = "No(Language Used)"
+                }
+                if (cbviolent == true && cblanguage == true){
+                    textofsuitable.text = "No(Violence And Language Used)"
+                }
+            }else{
+                textofsuitable.text = "Yes"
+            }
+
+            if (review == null || rating == 0F) {
+                registerForContextMenu(textofreview)
+            }
         }
     }
 
