@@ -103,17 +103,20 @@ class AddMovie : AppCompatActivity() {
                         }
 
                         val MovieInfoAdded = Intent(this@AddMovie, MovieDetail::class.java)
-                        MovieInfoAdded.putExtra("name", nameET.text.toString())
-                        MovieInfoAdded.putExtra("desc",desET.text.toString())
+                        MovieInfoAdded.putExtra("name", title)
+                        MovieInfoAdded.putExtra("desc",overview)
                         // Have already converted to string above
                         MovieInfoAdded.putExtra("language",language)
-                        MovieInfoAdded.putExtra("date",dateET.text.toString())
+                        MovieInfoAdded.putExtra("date",date)
 
                         MovieInfoAdded.putExtra("notsuitable", notsuitable)
                         MovieInfoAdded.putExtra("cbviolent", isviolence)
                         MovieInfoAdded.putExtra("cblanguage", islanguageused)
 
                         startActivity(MovieInfoAdded)
+
+                        displayToast(message.joinToString("\n"))
+
                     }
                 }
                 return true
