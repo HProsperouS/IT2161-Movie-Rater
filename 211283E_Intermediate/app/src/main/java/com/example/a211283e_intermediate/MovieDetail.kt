@@ -36,17 +36,25 @@ class MovieDetail : AppCompatActivity() {
             textofoverview.text = desc
             textoflanguage.text = language
             textofdate.text = date
+
+            // In case user only enter review or rating
+            // only display rating bar if user rating is not 0
             if (rating != 0F){
                 rate.rating = rating
                 rate.visibility = View.VISIBLE
             }
 
-            if (review != null) {
+            //by default
+
+            textofreview.text = "No Reviews yet. \nLong press here to add your review"
+
+            if (review?.isEmpty() == false) {
                 textofreview.text = review
-            }else if (rating != 0F){
+            }
+
+            // if not review entered and only rating entered, only display rating bar
+            if (review?.isEmpty() == true && rating != 0F){
                 textofreview.text = ""
-            }else{
-                textofreview.text = "No Reviews yet. \nLong press here to add your review"
             }
 
             if (notsuitbale == true){
@@ -62,8 +70,8 @@ class MovieDetail : AppCompatActivity() {
             }else{
                 textofsuitable.text = "Yes"
             }
-
-            if (review == null || rating == 0F) {
+            // only register context menu if totally no review collected, means review is null and rating is 0
+            if (textofreview.text == "No Reviews yet. \nLong press here to add your review" && rating == 0F) {
                 registerForContextMenu(textofreview)
             }
         }
