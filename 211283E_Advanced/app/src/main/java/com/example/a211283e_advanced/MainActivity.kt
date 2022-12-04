@@ -12,7 +12,6 @@ import android.widget.AdapterView
 import android.widget.ListView
 
 
-
 class MainActivity : AppCompatActivity() {
     private var arrayAdapter:MovieAdapter? = null
     private lateinit var sqliteHelper:SQLiteHelper

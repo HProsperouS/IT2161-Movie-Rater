@@ -17,10 +17,11 @@ class RateMovie : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.title = "Movie Rater"
         actionbar.setDisplayHomeAsUpEnabled(true)
-
-
         sqliteHelper = SQLiteHelper(this)
-
+        val m = getMovie()
+        binding.apply {
+            reviewTV.setText(reviewTV.text.toString() + m?.name)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -29,7 +30,7 @@ class RateMovie : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item?.itemId == R.id.addRating) {
+        if (item.itemId == R.id.addRating) {
             println("kk")
             rateMovie1()
         }
@@ -64,12 +65,26 @@ class RateMovie : AppCompatActivity() {
         intent.putExtra("MovieId", id)
         startActivity(intent)
     }
+
     override fun onSupportNavigateUp(): Boolean {
         val id: Int = intent.getIntExtra("MovieId", -1)
         val intent = Intent(this@RateMovie, MovieDetail::class.java)
         intent.putExtra("MovieId", id)
         startActivity(intent)
         return super.onSupportNavigateUp()
+    }
+
+    private fun getMovie(): MovieModel? {
+        val id: Int = intent.getIntExtra("MovieId", -1)
+        if (id == -1) {
+            return null
+        }
+        val movie = sqliteHelper.retrieveMovieById(id)
+        if (movie != null) {
+            println("Hello")
+            println(movie.id)
+        }
+        return movie
     }
 }
 

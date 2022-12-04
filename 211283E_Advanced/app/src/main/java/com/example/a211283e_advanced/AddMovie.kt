@@ -47,7 +47,7 @@ class AddMovie : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.Clear -> {
                 binding.apply {
                     nameET.setText("")

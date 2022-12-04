@@ -23,9 +23,7 @@ class MovieDetail : AppCompatActivity() {
         actionbar!!.title = "Movie Rater"
         actionbar.setDisplayHomeAsUpEnabled(true)
         retrieveMovie()
-        binding.apply {
-            registerForContextMenu(textofreview)
-        }
+
     }
 
     override fun onCreateContextMenu(
@@ -82,59 +80,44 @@ class MovieDetail : AppCompatActivity() {
                 val isSuitbale = m.isSuitable
                 val isViolence = m.isViolence
                 val isLanguageUsed = m.isLanguageUsed
-                if (m.review != null){
+
+                if(m.rating != 0F){
                     rate.rating = m.rating!!
-                    textofreview.setText(m.review)
-                }else{
-                    textofreview.text = "No Reviews yet. \nLong press here to add your review"
+                    rate.visibility = View.VISIBLE
                 }
+
+                textofreview.text = "No Reviews yet. \nLong press here to add your review"
+
+                if (m.review?.isEmpty() == false){
+                    textofreview.setText(m.review)
+                }
+
+                if (m.review?.isEmpty() == true && m.rating != 0F){
+                    textofreview.setText("")
+                }
+
 
                 if (isSuitbale == true){
                     if (isViolence == true){
                         textofsuitable.text = "No(Violence)"
                     }
-                    else if (isLanguageUsed == true){
+                    if (isLanguageUsed == true){
                         textofsuitable.text = "No(Language Used)"
                     }
-                    else{
+                    if(isViolence == true && isLanguageUsed == true){
                         textofsuitable.text = "No(Violence And Language Used)"
                     }
                 }else{
                     textofsuitable.text = "Yes"
                 }
-                registerForContextMenu(textofreview)
+                if (textofreview.text == "No Reviews yet. \nLong press here to add your review" && m.rating == 0F) {
+                    registerForContextMenu(textofreview)
+                }
             }else{
                 textoftitle.setText("NULL")
             }
 
         }
     }
-
-//    private fun reviewornot(){
-//        binding.apply {
-//            val m = getMovie()
-//            if (m != null) {
-//                if (m.review != null){
-//                    return
-//                }else{
-//                    registerForContextMenu(textofreview)
-//                }
-//            }
-//        }
-//    }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.edit,menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
-//
-//    // Redirect to Edit Movie info
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if (item?.itemId == R.id.Edit) {
-//            val intent = Intent(this,EditMovieDetail::class.java)
-//            startActivity(intent)
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
 }
