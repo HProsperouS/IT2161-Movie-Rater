@@ -1,5 +1,6 @@
 package com.example.a211283e_intermediate
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,16 +37,12 @@ class RateMovie : AppCompatActivity() {
             val notsuitbale = intent.getBooleanExtra("notsuitable", false)
             val cbviolent = intent.getBooleanExtra("cbviolent",false)
             val cblanguage = intent.getBooleanExtra("cblanguage",false)
-            val rating = rate.rating.toFloat()
-            val review = reviewET.text.toString()
 
             val intent = Intent(this@RateMovie, MovieDetail::class.java)
             intent.putExtra("name", name)
             intent.putExtra("desc",desc)
             intent.putExtra("language",language)
             intent.putExtra("date",date)
-            intent.putExtra("rating",rating)
-            intent.putExtra("review",review)
             intent.putExtra("notsuitable", notsuitbale)
             intent.putExtra("cbviolent", cbviolent)
             intent.putExtra("cblanguage", cblanguage)
@@ -63,28 +60,13 @@ class RateMovie : AppCompatActivity() {
         when(item.itemId){
             R.id.submit ->{
                 binding.apply {
-                    // Getting Movie Info from intent
-                    val name = intent.getStringExtra("name")
-                    val desc = intent.getStringExtra("desc")
-                    val language = intent.getStringExtra("language")
-                    val date = intent.getStringExtra("date")
-                    val notsuitbale = intent.getBooleanExtra("notsuitable", false)
-                    val cbviolent = intent.getBooleanExtra("cbviolent",false)
-                    val cblanguage = intent.getBooleanExtra("cblanguage",false)
                     val rating = rate.rating.toFloat()
                     val review = reviewET.text.toString()
-
-                    val intent = Intent(this@RateMovie, MovieDetail::class.java)
-                    intent.putExtra("name", name)
-                    intent.putExtra("desc",desc)
-                    intent.putExtra("language",language)
-                    intent.putExtra("date",date)
+                    val intent = Intent()
                     intent.putExtra("rating",rating)
                     intent.putExtra("review",review)
-                    intent.putExtra("notsuitable", notsuitbale)
-                    intent.putExtra("cbviolent", cbviolent)
-                    intent.putExtra("cblanguage", cblanguage)
-                    startActivity(intent)
+                    setResult(Activity.RESULT_OK,intent)
+                    finish()
                 }
                 return true
             }

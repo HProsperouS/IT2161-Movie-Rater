@@ -11,6 +11,7 @@ import com.example.a211283e_intermediate.databinding.ActivityMovieDetailBinding
 import com.example.a211283e_intermediate.Movieinfo
 
 class MovieDetail : AppCompatActivity() {
+    val RateMovie_Result_Code=1;
     private lateinit var binding: ActivityMovieDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,33 +30,13 @@ class MovieDetail : AppCompatActivity() {
             val notsuitbale = intent.getBooleanExtra("notsuitable", false)
             val cbviolent = intent.getBooleanExtra("cbviolent",false)
             val cblanguage = intent.getBooleanExtra("cblanguage",false)
-            val rating = intent.getFloatExtra("rating",0F)
-            val review = intent.getStringExtra("review")
 
             textoftitle.text = name
             textofoverview.text = desc
             textoflanguage.text = language
             textofdate.text = date
 
-            // In case user only enter review or rating
-            // only display rating bar if user rating is not 0
-            if (rating != 0F){
-                rate.rating = rating
-                rate.visibility = View.VISIBLE
-            }
-
-            //by default
-
             textofreview.text = "No Reviews yet. \nLong press here to add your review"
-
-            if (review?.isEmpty() == false) {
-                textofreview.text = review
-            }
-
-            // if not review entered and only rating entered, only display rating bar
-            if (review?.isEmpty() == true && rating != 0F){
-                textofreview.text = ""
-            }
 
             if (notsuitbale == true){
                 if (cbviolent == true){
@@ -71,7 +52,7 @@ class MovieDetail : AppCompatActivity() {
                 textofsuitable.text = "Yes"
             }
             // only register context menu if totally no review collected, means review is null and rating is 0
-            if (textofreview.text == "No Reviews yet. \nLong press here to add your review" && rating == 0F) {
+            if (textofreview.text == "No Reviews yet. \nLong press here to add your review") {
                 registerForContextMenu(textofreview)
             }
         }
@@ -89,7 +70,6 @@ class MovieDetail : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.review ->{
-
                 val name = intent.getStringExtra("name")
                 val desc = intent.getStringExtra("desc")
                 val language = intent.getStringExtra("language")
@@ -97,7 +77,6 @@ class MovieDetail : AppCompatActivity() {
                 val notsuitbale = intent.getBooleanExtra("notsuitable", false)
                 val cbviolent = intent.getBooleanExtra("cbviolent",false)
                 val cblanguage = intent.getBooleanExtra("cblanguage",false)
-
                 val intent = Intent(this@MovieDetail,RateMovie::class.java)
                 intent.putExtra("name", name)
                 intent.putExtra("desc",desc)
@@ -106,11 +85,48 @@ class MovieDetail : AppCompatActivity() {
                 intent.putExtra("notsuitable", notsuitbale)
                 intent.putExtra("cbviolent", cbviolent)
                 intent.putExtra("cblanguage", cblanguage)
-                startActivity(intent)
+                startActivityForResult(intent,RateMovie_Result_Code)
                 true
             }
 
             else -> super.onContextItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RateMovie_Result_Code)
+        {
+            if(resultCode == RESULT_OK) {
+                val rating = data?.getFloatExtra("rating",0F)
+                val review = data?.getStringExtra("review")
+                // In case user only enter review or rating
+                // only display rating bar if user rating is not 0
+                binding.apply {
+                    if (rating != 0F){
+                        if (rating != null) {
+                            rate.rating = rating
+                            rate.visibility = View.VISIBLE
+                        }
+                    }
+                    textofreview.text = "No Reviews yet. \nLong press here to add your review"
+
+                    if (review?.isEmpty() == false) {
+                        textofreview.text = review
+                    }
+
+                    // if not review entered and only rating entered, only display rating bar
+                    if (review?.isEmpty() == true && rating != 0F){
+                        textofreview.text = ""
+                    }
+
+                    if (textofreview.text == "No Reviews yet. \nLong press here to add your review" && rating == 0F) {
+                        registerForContextMenu(textofreview)
+                    }else{
+                        unregisterForContextMenu(textofreview)
+                    }
+                }
+            }
         }
     }
 
